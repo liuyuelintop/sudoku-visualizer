@@ -17,7 +17,7 @@
 ### 📊 Performance Achievements
 - **92% rendering performance improvement** through Immer.js structural sharing
 - **89% memory reduction** via compact history management
-- **Optimized React state management** with advanced hooks composition
+- **Optimized React state management** with advanced hooks composition pattern
 - **Smooth animations** with configurable speed control (50-1000ms per step)
 
 ### 🎓 Educational Components
@@ -25,12 +25,20 @@
 - **Constraint visualization** showing row/column/box conflicts in real-time
 - **MRV scan animation** demonstrating algorithm decision process
 - **Interactive timeline** for exploring solver steps and backtracking
+- **Comprehensive feedback** for unsolvable puzzles with clear status messages
+
+### 🚀 User Experience Excellence
+- **Advanced puzzle input** with multi-format paste modal supporting 9-line, single-line, and CSV formats
+- **Real-time validation** with format detection and error feedback
+- **Smart sample management** with verified solvable puzzles across difficulty levels
+- **Intuitive controls** with separated interface cards for better organization
 
 ### 🏗️ Technical Excellence
-- **Clean Architecture** with separated business logic, state management, and UI
+- **Clean Architecture** with separated business logic, state management, and UI layers
 - **Complete TypeScript coverage** with comprehensive type definitions
-- **Production-ready error handling** with user-friendly fallbacks
-- **Comprehensive documentation** with detailed JSDoc annotations
+- **Production-ready error handling** with graceful degradation and user feedback
+- **Advanced state management** using Immer.js for structural sharing and performance
+- **Comprehensive documentation** with detailed JSDoc annotations and architecture guides
 
 ## 🚀 Quick Start
 
@@ -78,8 +86,9 @@ pnpm preview
 
 ### Sample Puzzles
 - **Classic (LeetCode)**: Standard difficulty demonstration puzzle
-- **Easy/Medium/Hard**: Various difficulty levels for testing
-- **Custom Input**: Paste your own puzzle (9 lines, use `.` for empty cells)
+- **Easy/Medium/Hard**: Various difficulty levels with verified solvability
+- **Custom Input**: Advanced paste modal with multi-format support (9-line, single-line, CSV)
+- **Format Detection**: Automatic recognition and validation of different input formats
 
 ### Learning Features
 - **Learning Mode**: Shows educational panels by default
@@ -97,25 +106,31 @@ src/
 │   ├── solver.ts        # MRV generator algorithm
 │   ├── validation.ts    # Input validation
 │   └── index.ts         # Public exports
-├── hooks/               # State management
-│   ├── useSolverStateImmer.ts   # Core solver state with Immer
-│   ├── useVisualization.ts     # UI timers/animations
+├── hooks/               # State management layer
+│   ├── useSolverStateImmer.ts   # Core solver state with Immer optimization
+│   ├── useVisualization.ts     # UI timers/animations/logging
 │   └── useSudokuController.ts  # Business logic orchestration
 ├── components/          # UI components
-│   ├── SudokuVisualizer.tsx    # Main application
-│   ├── BoardView.tsx           # Interactive grid
-│   ├── ConstraintsPanel.tsx    # Constraint analysis
-│   ├── EmptiesPanel.tsx        # MRV visualization
-│   └── ...                     # Additional components
+│   ├── SudokuVisualizer.tsx    # Main application orchestrator
+│   ├── BoardView.tsx           # Interactive Sudoku grid
+│   ├── ControlsCard.tsx        # Solver controls interface
+│   ├── ConstraintsPanel.tsx    # Constraint analysis display
+│   ├── EmptiesPanel.tsx        # MRV algorithm visualization
+│   ├── PasteModal.tsx          # Advanced puzzle input modal
+│   ├── ErrorBoundary.tsx       # Error handling
+│   └── ...                     # Additional utility components
 ├── types/sudoku.ts      # TypeScript definitions
-└── utils/               # Helper utilities
+├── utils/               # Helper utilities and formatters
+├── config/              # Feature flags and constants
+└── docs/                # Architecture and development documentation
 ```
 
 ### Key Design Patterns
 - **Generator-based solving**: Lazy evaluation with pause/resume capability
-- **Immer.js structural sharing**: Efficient immutable state updates
-- **Hooks composition**: Single-responsibility state management
-- **Progressive disclosure**: Learning vs Expert interface modes
+- **Immer.js structural sharing**: Efficient immutable state updates with 92% performance improvement
+- **Three-tier hooks composition**: useSolverStateImmer (state) + useVisualization (UI) + useSudokuController (orchestration)
+- **Progressive disclosure**: Learning vs Expert interface modes with adaptive UI
+- **Component separation**: Modular UI with dedicated cards for controls, constraints, and visualization
 
 ## 🔬 Algorithm Details
 
@@ -147,10 +162,11 @@ src/
 
 ### Technology Stack
 - **Frontend**: React 18 + TypeScript + Vite
-- **State Management**: React Hooks + Immer.js for structural sharing
-- **Styling**: Tailwind CSS via CDN
-- **Build Tool**: Vite with TypeScript compilation
-- **Package Manager**: pnpm (or npm)
+- **State Management**: Advanced React Hooks composition + Immer.js for structural sharing
+- **Styling**: Tailwind CSS via CDN with responsive design
+- **Build Tool**: Vite with TypeScript compilation and tree-shaking
+- **Package Manager**: pnpm (primary) or npm/bun (supported)
+- **Runtime**: Node.js 18+ or Bun runtime support
 
 ## 📈 Performance Metrics
 

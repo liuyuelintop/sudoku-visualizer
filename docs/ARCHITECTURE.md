@@ -31,8 +31,9 @@ src/
 │   ├── SudokuVisualizer.tsx    # Main application orchestrator
 │   ├── BoardView.tsx           # Interactive Sudoku grid
 │   ├── ControlsCard.tsx        # Solver controls interface
-│   ├── ConstraintsPanel.tsx    # Constraint analysis
+│   ├── ConstraintsPanel.tsx    # Constraint analysis display
 │   ├── EmptiesPanel.tsx        # MRV algorithm visualization
+│   ├── PasteModal.tsx          # Advanced puzzle input modal
 │   ├── ErrorBoundary.tsx       # Error handling
 │   ├── PerformanceComparison.tsx # A/B testing tools
 │   ├── EmptiesArrayVisualizer.tsx # Array operations viz
@@ -66,25 +67,29 @@ src/
 
 ### 2. State Management Layer (`/hooks/`)
 
-**Architecture Pattern**: Composition of specialized hooks for separation of concerns.
+**Architecture Pattern**: Three-tier hooks composition for optimal separation of concerns and performance.
 
-#### `useSolverStateImmer.ts` - Core State Management
-- **Immer Integration**: Structural sharing for optimal React performance
-- **State Shape**: Board, empties array, usage tables, history snapshots
-- **Generator Lifecycle**: Safe management of solver generator state
-- **Performance**: 92% rendering improvement through structural sharing
+#### `useSolverStateImmer.ts` - Core State Management (Tier 1)
+- **Immer Integration**: Structural sharing for optimal React performance (92% improvement)
+- **State Shape**: Board, empties array, usage tables, history snapshots with delta tracking
+- **Generator Lifecycle**: Safe management of solver generator state with pause/resume
+- **No-solution Handling**: Proper state synchronization for unsolvable puzzles
+- **Performance**: Automatic structural sharing prevents unnecessary re-renders
 
-#### `useVisualization.ts` - UI State Management
-- **Animation Control**: MRV scan animations, timing, speed control
-- **Timeline Navigation**: History browsing with snapshot viewing
-- **Logging System**: Step logs with optional board snapshots
-- **Timer Management**: Auto-stepping with configurable intervals
+#### `useVisualization.ts` - UI State Management (Tier 2)
+- **Animation Control**: MRV scan animations with configurable timing and speed
+- **Timeline Navigation**: History browsing with snapshot viewing and live state switching
+- **Logging System**: Comprehensive step logs with optional board snapshots
+- **Timer Management**: Auto-stepping with configurable intervals and cleanup
+- **User Feedback**: Status messages and interactive controls
 
-#### `useSudokuController.ts` - Business Logic Orchestration
-- **Hook Composition**: Combines solver state + visualization state
-- **Enhanced Actions**: Validation-aware solver controls
-- **Sample Management**: Built-in puzzle library
-- **Effect Coordination**: Timer effects, animation triggers, logging
+#### `useSudokuController.ts` - Business Logic Orchestration (Tier 3)
+- **Hook Composition**: Seamlessly combines Tier 1 + Tier 2 hooks into unified interface
+- **Enhanced Actions**: Validation-aware solver controls with comprehensive error handling
+- **Sample Management**: Built-in puzzle library with verified solvable puzzles
+- **Effect Coordination**: Timer effects, animation triggers, logging, and validation
+- **Modal Management**: PasteModal state and multi-format input handling
+- **User Experience**: Comprehensive feedback for success, failure, and error cases
 
 ### 3. UI Component Layer (`/components/`)
 
@@ -113,6 +118,19 @@ src/
 - **Array Operations**: Shows frontier management and cell swapping
 - **Educational Value**: Step-by-step MRV scan animation
 - **Performance**: Auto-scroll with smooth behavior
+
+#### `ControlsCard.tsx` - Solver Controls Interface
+- **Separated UI**: Dedicated card for solver control buttons and settings
+- **State-aware Controls**: Dynamic button states based on solver status
+- **Narrative Metrics**: Real-time feedback with success/failure messaging
+- **Speed Control**: Integrated animation speed slider with visual feedback
+
+#### `PasteModal.tsx` - Advanced Puzzle Input
+- **Multi-format Support**: 9-line, single-line (81 chars), and CSV input formats
+- **Real-time Validation**: Format detection with immediate feedback
+- **Interactive Examples**: Clickable format examples with live preview
+- **Error Handling**: Comprehensive validation with user-friendly error messages
+- **Accessibility**: Keyboard shortcuts (Ctrl+Enter to confirm, Esc to cancel)
 
 ## Performance Architecture
 
