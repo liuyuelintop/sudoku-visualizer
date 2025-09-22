@@ -56,6 +56,7 @@ import ConstraintsPanel from './ConstraintsPanel';
 import EmptiesPanel from './EmptiesPanel';
 import ControlsCard from './ControlsCard';
 import PerformanceComparison from './PerformanceComparison';
+import PasteModal from './PasteModal';
 import { isFeatureEnabled } from '../config/featureFlags';
 
 /**
@@ -348,6 +349,13 @@ export default function SudokuVisualizer() {
       {/* {isFeatureEnabled('ENABLE_PERFORMANCE_TRACKING') && (
         <PerformanceComparison />
       )} */}
+
+      {/* Paste Modal */}
+      <PasteModal
+        isOpen={controller.isPasteModalOpen}
+        onClose={controller.handlePasteCancel}
+        onConfirm={controller.handlePasteConfirm}
+      />
     </div>
   );
 }
