@@ -113,7 +113,7 @@ export function useSudokuController() {
       '53..7....','6..195...','.98....6.','8...6...3','4..8.3..1','7...2...6','.6....28.','...419..5','....8..79',
     ]},
     { key: 'easy', name: 'Easy', rows: [
-      '.1.7..4.2','..9..1..7','..7...9..','..8.5.1..','7.......4','..1.9.3..','..3...6..','4..8..2..','6.2..7.8.',
+      '..3......','...18....','..7...3..','..82....9','......4..','2....93..','..9...7..','....72...','......8..',
     ]},
     { key: 'medium', name: 'Medium', rows: [
       '..9748...','7........','.2.1.9...','..7...24.','.64.1.59.','.98...3..','...8.3.2.','........6','...2759..',
@@ -133,6 +133,7 @@ export function useSudokuController() {
     conflictSet: new Set(),
     comprehensive: { errors: [], warnings: [] }
   });
+  const [isPasteModalOpen, setIsPasteModalOpen] = useState(false);
 
   // Timer reference for automatic stepping
   const timerRef = useRef<number | null>(null);
@@ -254,27 +255,20 @@ export function useSudokuController() {
   }, [solver, visualization]);
 
   const onPaste = useCallback(() => {
-    const txt = prompt("Paste 9 lines (use '.' for empty). Example: .97..3..1\n8..1.2..3\n..3.....6\n..5.1.7..\n.1.....8.\n..9.8.5..\n6.....9..\n4..9.3..5\n2..4..81.");
-    if (!txt) return;
+    setIsPasteModalOpen(true);
+  }, []);
 
-    const { board, validation: validationResult } = createBoardFromString(txt);
-
-    if (!board || !validationResult.isValid) {
-      const errorMessage = validationResult.errors.join('\n');
-      alert(`Invalid input:\n${errorMessage}`);
-      return;
-    }
-
+  const handlePasteConfirm = useCallback((board: Board) => {
     solver.initializePuzzle(board);
     setValidation(validateBoardComprehensively(board));
     visualization.resetTimer();
     visualization.addLog(['action: paste initial board', ...boardToLogLines(board)]);
-
-    // Log warnings if any
-    if (validationResult.warnings.length > 0) {
-      visualization.addLog(['warnings:', ...validationResult.warnings]);
-    }
+    setIsPasteModalOpen(false);
   }, [solver, visualization, validateBoardComprehensively]);
+
+  const handlePasteCancel = useCallback(() => {
+    setIsPasteModalOpen(false);
+  }, []);
 
   const onViewSnapshot = useCallback((index: number) => {
     solver.viewSnapshot(index);
@@ -344,6 +338,7 @@ export function useSudokuController() {
     sampleKey,
     validation,
     samples: SAMPLES,
+    isPasteModalOpen,
 
     // Enhanced actions
     onStart,
@@ -353,6 +348,8 @@ export function useSudokuController() {
     onViewSnapshot,
     onViewLive,
     loadSample,
-    onPaste
+    onPaste,
+    handlePasteConfirm,
+    handlePasteCancel
   };
 }

@@ -80,7 +80,13 @@ const NarrativeMetrics: React.FC<NarrativeMetricsProps> = ({ controller }) => {
 
     if (controller.finished) {
       const { steps, backtracks } = controller.metrics;
-      message = `Solved! Final score: ${steps} steps, ${backtracks} backtracks.`;
+
+      // Check if puzzle was actually solved or has no solution
+      if (lastEvent.note === 'No solution') {
+        message = `No solution found! Explored ${steps} steps, ${backtracks} backtracks.`;
+      } else {
+        message = `Solved! Final score: ${steps} steps, ${backtracks} backtracks.`;
+      }
     } else if (lastEvent.event === 'backtrack') {
       message = `Backtrack! Undoing step ${lastEvent.idx}. Total backtracks: ${controller.metrics.backtracks}`;
     }
