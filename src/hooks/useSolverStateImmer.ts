@@ -341,6 +341,39 @@ export function useSolverStateImmer() {
           draft.currentStep.mrvSwap = null;
           draft.currentStep.mrvScanPos = 0;
         }));
+      } else {
+        // Handle no-solution case - generator completed with value: false
+        setCoreState(produce((draft) => {
+          draft.running = false;
+          draft.finished = true;
+
+          // Create final snapshot for no-solution case
+          const snapshot = {
+            idx: draft.history.length,
+            event: 'final',
+            board: draft.board, // Keep current board state
+            highlight: null,
+            trying: null,
+            candidates: [],
+            empties: [],
+            usage: buildUsage(draft.board),
+            note: 'No solution',
+            deltaFromPrevious: {
+              boardChanges: [] // No board changes in no-solution case
+            }
+          };
+          draft.history.push(snapshot);
+
+          // Reset current step state
+          draft.currentStep.highlight = null;
+          draft.currentStep.trying = null;
+          draft.currentStep.candidates = [];
+          draft.currentStep.empties = [];
+          draft.currentStep.usage = null;
+          draft.currentStep.mrvScan = [];
+          draft.currentStep.mrvSwap = null;
+          draft.currentStep.mrvScanPos = 0;
+        }));
       }
 
       genRef.current = null;
